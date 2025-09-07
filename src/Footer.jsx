@@ -1,40 +1,21 @@
 import { useState } from "react";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
-import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 
+import Task from "./Task";
+import ConfirmDeletePopUp from "./ConfirmDeletePopUp";
+import { d } from "./EventIcons";
 let count = 1;
 export default function Footer() {
   const [taskValue, setTaskValue] = useState("");
-  const [finalTaskValue, setFinalTaskValue] = useState([]);
-  const taskList = finalTaskValue.map((t) => {
-    return (
-      <div
-        key={t.id}
-        className="mt-10 bg-blue-900 rounded-md shadow flex justify-between items-center p-2 "
-      >
-        <h1 className="text-[24px] font-bold ">{t.title}</h1>
-        <div className="flex space-x-4">
-          <div
-            onClick={handleDelete}
-            id={t.id}
-            className="cursor-pointer border border-solid border-red-500 rounded-[50%] text-red-500 bg-white w-8 h-8 flex justify-center items-center"
-          >
-            <DeleteOutlineOutlinedIcon style={{ fontSize: "16px" }} />
-          </div>
-          <div className="cursor-pointer border border-solid border-blue-500 rounded-[50%] text-blue-500 bg-white w-8 h-8 flex justify-center items-center">
-            <CreateOutlinedIcon style={{ fontSize: "16px" }} />
-          </div>
-          <div className="cursor-pointer border border-solid border-green-500 rounded-[50%] text-green-500 bg-white w-8 h-8 flex justify-center items-center">
-            <CheckOutlinedIcon style={{ fontSize: "16px" }} />
-          </div>
-        </div>
-      </div>
-    );
+  const [allTasks, setAllTasks] = useState([]);
+  const [popUpState, setPopUpState] = useState(false);
+  const tasks = allTasks.map((t) => {
+    return <Task key={t.id} title={t.title} />;
   });
+
   return (
     <>
-      {taskList}
+      <ConfirmDeletePopUp state={popUpState} />
+      {tasks}
       <div className="flex justify-center items-center space-x-2 px-2 mt-6">
         <button
           onClick={addNewTask}
@@ -46,25 +27,24 @@ export default function Footer() {
           onChange={handleStateValue}
           value={taskValue}
           type="text"
-          className="flex-3 btn text-gray-700 font-bold "
+          className="flex-3 btn text-gray-700 font-bold"
           placeholder="Task Title"
         />
       </div>
     </>
   );
+
+  function handleDeleteClick() {
+    setPopUpState(d());
+  }
+
   function addNewTask() {
-    setFinalTaskValue((e) => [...e, { id: count, title: taskValue }]);
+    setAllTasks([...allTasks, { id: count, title: taskValue }]);
     count++;
+    setTaskValue("");
   }
 
   function handleStateValue(e) {
     setTaskValue(e.target.value);
   }
-  function handleDelete(e) {
-    for (let t in finalTaskValue ) {
-      if (t.id == e.id) {
-        
-      }
-    }
-  } 
 }
