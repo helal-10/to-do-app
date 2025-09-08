@@ -1,7 +1,7 @@
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
-export default function EventIcons() {
+export default function EventIcons({ h }) {
   return (
     <>
       <DeleteOutlineOutlinedIcon
@@ -19,7 +19,7 @@ export default function EventIcons() {
       />
     </>
   );
-}
-export function d() {
-  return true;
+  function d(e) {
+    h(true);
+  }
 }

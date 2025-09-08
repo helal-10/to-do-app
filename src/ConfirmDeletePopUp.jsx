@@ -1,4 +1,4 @@
-export default function ConfirmDeletePopUp({ state }) {
+export default function ConfirmDeletePopUp({ state, handleState }) {
   if (state) {
     return (
       <div className="bg-black/40 w-svw h-svh absolute left-0 top-0">
@@ -21,14 +21,10 @@ export default function ConfirmDeletePopUp({ state }) {
       </div>
     );
   }
-}
-// eslint-disable-next-line react-refresh/only-export-components
-export function cancleDelete(e) {
-  console.log("it canclled");
-  return true;
-}
-// eslint-disable-next-line react-refresh/only-export-components
-export function confirmDelete(e) {
-  console.log("it not canclled");
-  return true;
+  function cancleDelete() {
+    handleState(false);
+  }
+  function confirmDelete() {
+    handleState(false);
+  }
 }

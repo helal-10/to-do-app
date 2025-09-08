@@ -2,19 +2,19 @@ import { useState } from "react";
 
 import Task from "./Task";
 import ConfirmDeletePopUp from "./ConfirmDeletePopUp";
-import { d } from "./EventIcons";
+import EventIcons from "./EventIcons";
 let count = 1;
 export default function Footer() {
   const [taskValue, setTaskValue] = useState("");
   const [allTasks, setAllTasks] = useState([]);
   const [popUpState, setPopUpState] = useState(false);
   const tasks = allTasks.map((t) => {
-    return <Task key={t.id} title={t.title} />;
+    return <Task key={t.id} title={t.title} handlePopUp={setPopUpState} />;
   });
 
   return (
     <>
-      <ConfirmDeletePopUp state={popUpState} />
+      <ConfirmDeletePopUp state={popUpState} handleState={setPopUpState} />
       {tasks}
       <div className="flex justify-center items-center space-x-2 px-2 mt-6">
         <button
@@ -33,10 +33,6 @@ export default function Footer() {
       </div>
     </>
   );
-
-  function handleDeleteClick() {
-    setPopUpState(d());
-  }
 
   function addNewTask() {
     setAllTasks([...allTasks, { id: count, title: taskValue }]);
