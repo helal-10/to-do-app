@@ -1,4 +1,8 @@
-export default function ConfirmDeletePopUp({ state, handleState }) {
+export default function ConfirmDeletePopUp({
+  state,
+  handlePopUpState,
+  handleDeleteState,
+}) {
   if (state) {
     return (
       <div className="bg-black/40 w-svw h-svh absolute left-0 top-0">
@@ -10,21 +14,27 @@ export default function ConfirmDeletePopUp({ state, handleState }) {
             You Can Not Go Back If You Delete it
           </p>
           <div className="flex justify-end items-center text-red-500 space-x-4 mt-4">
-            <button onClick={cancleDelete} className="btn cursor-pointer">
+            <button
+              onClick={() => {
+                handlePopUpState(false);
+                handleDeleteState(false);
+              }}
+              className="btn cursor-pointer"
+            >
               Close
             </button>
-            <button onClick={confirmDelete} className="btn cursor-pointer">
+            <button
+              onClick={() => {
+                handlePopUpState(false);
+                handleDeleteState(true);
+              }}
+              className="btn cursor-pointer"
+            >
               Yes, Delete it
             </button>
           </div>
         </div>
       </div>
     );
-  }
-  function cancleDelete() {
-    handleState(false);
-  }
-  function confirmDelete() {
-    handleState(false);
   }
 }
