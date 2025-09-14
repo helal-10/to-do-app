@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { TasksContext } from "../contexts/tasksContext";
+import { TasksContext } from "../contexts/TasksContext";
 import { useState } from "react";
 export default function EditTaskPopup() {
   const [inputValue, setInputValue] = useState("");
