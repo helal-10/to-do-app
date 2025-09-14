@@ -3,7 +3,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CheckIcon from "@mui/icons-material/CheckOutlined";
 import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
 //component
-import { TasksContext } from "../contexts/tasksContext";
+import { TasksContext } from "../contexts/TasksContext";
 //other
 import { useContext } from "react";
 export default function ToDoTask() {
