@@ -13,6 +13,7 @@ export default function EditTaskPopup() {
             تعديل المهمة
           </h1>
           <input
+            defaultValue={tasks.editState.prevTitle}
             onChange={(e) => {
               setInputValue(e.target.value);
             }}
@@ -39,11 +40,13 @@ export default function EditTaskPopup() {
     );
   }
   function handleEditConfirm() {
-    tasks.handleEditTasks({
-      state: false,
-      confirm: true,
-      newTitle: inputValue,
-    });
+    if (inputValue) {
+      tasks.handleEditTasks({
+        state: false,
+        confirm: true,
+        newTitle: inputValue,
+      });
+    }
   }
   function handleEditCancel() {
     tasks.handleEditTasks({ state: false, confirm: false });

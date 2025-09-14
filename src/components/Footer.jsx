@@ -1,9 +1,12 @@
+import { useRef } from "react";
 export default function Footer({
   changeTaskValue,
   taskValue,
   handleAddNewTask,
 }) {
+  const inputFocus = useRef(null);
   function handleAddTaskTitle() {
+    inputFocus.current.focus();
     handleAddNewTask();
   }
   return (
@@ -18,6 +21,7 @@ export default function Footer({
         onChange={(e) => {
           changeTaskValue(e.target.value);
         }}
+        ref={inputFocus}
         placeholder="عنوان المهمة"
         value={taskValue}
         className="flex-2 border border-solid border-[#d9d9d9] rounded-sm p-2 outline-0 focus:border focus:border-solid focus:border-gray-500 max-sm:text-[14px]"

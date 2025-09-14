@@ -13,9 +13,14 @@
 * {
   box-sizing: border-box;
 }
+li.active {
+  color: #9810fa;
+  background-color: white;
+}
+
 @layer components {
   .li-btn {
-    @apply border border-solid border-purple-950 bg-[#d9d9d9] text-black p-2 rounded-sm hover:bg-gray-500 hover:text-white cursor-pointer duration-300;
+    @apply border border-solid border-purple-950 bg-[#d9d9d9] text-black p-2 rounded-sm hover:bg-white hover:text-purple-600 cursor-pointer duration-300;
   }
   .icon {
   }

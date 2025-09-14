@@ -16,22 +16,30 @@ export default function ToDoProject() {
     state: false,
     id: "",
   });
-  const allTasks = tasksTtiles.map((t) => {
-    return {
-      title: t.title,
-      id: uuidv4(),
-      isCompleted: false,
-    };
+  // Filtering tasks
+  const [active, setActive] = useState({
+    all: true,
+    done: false,
+    notDone: false,
   });
+  const all = tasksTtiles;
+  const done = tasksTtiles.filter((t) => t.isCompleted == true);
+  const notDone = tasksTtiles.filter((t) => t.isCompleted == false);
 
   return (
     <TasksContext.Provider
       value={{
-        allTasks,
+        tasksTtiles,
+        all,
+        done,
+        notDone,
+        active,
         handleDeleteTaks,
         handleEditTasks,
         editState,
         handleShowEditPopup,
+        handleFilteringTasks,
+        hadnleDoneTasks,
       }}
     >
       <div className="">
@@ -47,29 +55,41 @@ export default function ToDoProject() {
     </TasksContext.Provider>
   );
 
+  function handleFilteringTasks(updatedFiltering) {
+    setActive(updatedFiltering);
+  }
   function changeTaskValue(value) {
     setTaskValue(value);
   }
   function handleAddNewTask() {
-    setTasksTitles([...tasksTtiles, { title: taskValue }]);
+    setTasksTitles([
+      ...tasksTtiles,
+      { title: taskValue, id: uuidv4(), isCompleted: false },
+    ]);
     setTaskValue("");
   }
   function handleDeleteTaks(updatedTasks) {
-    console.log(updatedTasks);
-
     setTasksTitles(updatedTasks);
   }
-  function handleShowEditPopup({ id, state }) {
-    setEditState({ id, state });
+  function handleShowEditPopup({ id, state, prevTitle }) {
+    setEditState({ id, state, prevTitle });
   }
-  function handleEditTasks({ id, state, confirm, newTitle }) {
+  function handleEditTasks({ state, confirm, newTitle }) {
     setEditState({ ...editState, state: state });
     const updatedTasks = tasksTtiles.map((t) => {
-      if (t.id == id && confirm == true) {
-        return { title: newTitle };
+      if (t.id == editState.id && confirm) {
+        return { id: t.id, title: newTitle, isCompleted: t.isCompleted };
       }
-      console.log("gggg");
 
+      return t;
+    });
+    setTasksTitles(updatedTasks);
+  }
+  function hadnleDoneTasks(id) {
+    const updatedTasks = tasksTtiles.map((t) => {
+      if (t.id == id) {
+        return { ...t, isCompleted: true };
+      }
       return t;
     });
     setTasksTitles(updatedTasks);
