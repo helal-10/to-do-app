@@ -105,7 +105,7 @@ export default function ToDoProject() {
   function hadnleDoneTasks(id) {
     const updatedTasks = tasksTtiles.map((t) => {
       if (t.id == id) {
-        return { ...t, isCompleted: true };
+        return { ...t, isCompleted: !t.isCompleted };
       }
       return t;
     });

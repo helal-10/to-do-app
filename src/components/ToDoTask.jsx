@@ -28,7 +28,11 @@ export default function ToDoTask() {
                 onClick={(e) => {
                   handleCheckClick(t.id, e);
                 }}
-                className="bg-white border border-solid border-green-500 text-green-500 text-[35px] max-sm:text-[25px] rounded-[50%] p-1 cursor-pointer"
+                className={`${
+                  t.isCompleted
+                    ? "bg-green-500 text-white"
+                    : "text-green-500 bg-white"
+                } border border-solid border-green-500 text-[35px] max-sm:text-[25px] rounded-[50%] p-1 cursor-pointer`}
               />
               <ModeOutlinedIcon
                 onClick={() => {
@@ -66,7 +70,11 @@ export default function ToDoTask() {
                 onClick={(e) => {
                   handleCheckClick(t.id, e);
                 }}
-                className="bg-green-700 border border-solid border-green-500 text-white text-[35px] max-sm:text-[25px] rounded-[50%] p-1 cursor-pointer"
+                className={`${
+                  t.isCompleted
+                    ? "bg-green-500 text-white"
+                    : "text-green-500 bg-white"
+                } border border-solid border-green-500 text-[35px] max-sm:text-[25px] rounded-[50%] p-1 cursor-pointer`}
               />
               <ModeOutlinedIcon
                 onClick={() => {
@@ -104,7 +112,11 @@ export default function ToDoTask() {
                 onClick={(e) => {
                   handleCheckClick(t.id, e);
                 }}
-                className="bg-white border border-solid border-green-500 text-green-500 text-[35px] max-sm:text-[25px] rounded-[50%] p-1 cursor-pointer"
+                className={`${
+                  t.isCompleted
+                    ? "bg-green-500 text-white"
+                    : "text-green-500 bg-white"
+                } border border-solid border-green-500 text-[35px] max-sm:text-[25px] rounded-[50%] p-1 cursor-pointer`}
               />
               <ModeOutlinedIcon
                 onClick={() => {
@@ -125,7 +137,13 @@ export default function ToDoTask() {
   }
 
   function handleCheckClick(id, e) {
-    e.target.style = "background-color: green; color: white";
+    e.target.classList.toggle("bg-white");
+    e.target.classList.toggle("text-green-500");
+    e.target.classList.toggle("bg-green-500");
+    e.target.classList.toggle("text-white");
+
+    // e.target.classLis.toggle("background-color: green; color: white");
+
     tasksContext.hadnleDoneTasks(id);
   }
 
