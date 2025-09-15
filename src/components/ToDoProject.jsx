@@ -2,7 +2,7 @@
 import Header from "./Header";
 import Footer from "./Footer";
 import ToDoTask from "./ToDoTask";
-import { TasksContext } from "../contexts/tasksContext";
+import { TasksContext } from "../contexts/TasksContext";
 import EditTaskPopup from "./EditTaskPopup";
 import DeleteTaskPopUp from "./DeleteTaskPopUp";
 
