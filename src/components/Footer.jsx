@@ -24,7 +24,7 @@ export default function Footer({
         ref={inputFocus}
         placeholder="عنوان المهمة"
         value={taskValue}
-        className="flex-2 border border-solid border-[#d9d9d9] rounded-sm p-2 outline-0 focus:border focus:border-solid focus:border-gray-500 max-sm:text-[14px]"
+        className="flex-2 border border-solid border-[#d9d9d9] rounded-sm p-2 outline-0 focus:border focus:border-solid focus:border-gray-500 text-[16px]"
       />
     </div>
   );
