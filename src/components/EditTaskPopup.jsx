@@ -1,14 +1,15 @@
 import { useContext } from "react";
-import { TasksContext } from "../contexts/tasksContext";
+import { TasksContext } from "../contexts/TasksContext";
 import { useState } from "react";
 export default function EditTaskPopup() {
   const [inputValue, setInputValue] = useState("");
   const tasks = useContext(TasksContext);
+
   if (tasks.editState.state) {
     return (
       <>
-        {/* <div className="absolute top-0 left-0 min-w-[100vw] min-h-[100vh] bg-black "></div> */}
-        <div className="absolute left-[-5%] top-[50%] p-4 translate-y-[-50%] border border-solid border-[#d9d9d9] min-w-[110%] rounded-sm shadow-2xl bg-purple-900">
+        <div className="absolute bg-black/50 w-[100vw] h-[100vh] top-0 left-0"></div>
+        <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-purple-900 w-[40%] mx-auto rounded-md shadow-2xl p-4 max-sm:w-[90%] max-md:w-[90%] max-lg:w-[70%]">
           <h1 className="text-end text-2xl text-[#d9d9d9] font-bold">
             تعديل المهمة
           </h1>

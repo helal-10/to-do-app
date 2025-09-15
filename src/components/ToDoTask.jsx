@@ -8,7 +8,7 @@ import { TasksContext } from "../contexts/tasksContext";
 import { useContext } from "react";
 export default function ToDoTask() {
   const tasksContext = useContext(TasksContext);
-  let tasks = [];
+  let tasks;
   if (tasksContext.active.all) {
     tasks = tasksContext.all.map((t) => {
       if (t.title) {
@@ -135,7 +135,11 @@ export default function ToDoTask() {
         return t;
       }
     });
-    tasksContext.handleDeleteTaks(updatedTasks);
+    tasksContext.handleDeleteTaks({
+      state: true,
+      isDeleted: false,
+      updated: updatedTasks,
+    });
   }
 
   function handleEditClick(idNumber, title) {
@@ -146,5 +150,15 @@ export default function ToDoTask() {
     });
   }
 
-  return <>{tasks}</>;
+  return (
+    <>
+      {tasks.length < 1 ? (
+        <div className="font-bold mt-8 text-2xl text-gray-400">
+          لا توجد مهام
+        </div>
+      ) : (
+        tasks
+      )}
+    </>
+  );
 }

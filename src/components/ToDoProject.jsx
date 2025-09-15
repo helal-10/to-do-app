@@ -4,6 +4,7 @@ import Footer from "./Footer";
 import ToDoTask from "./ToDoTask";
 import { TasksContext } from "../contexts/tasksContext";
 import EditTaskPopup from "./EditTaskPopup";
+import DeleteTaskPopUp from "./DeleteTaskPopUp";
 
 //others
 import { useState } from "react";
@@ -15,6 +16,11 @@ export default function ToDoProject() {
   const [editState, setEditState] = useState({
     state: false,
     id: "",
+  });
+  const [deleteState, setDeleteState] = useState({
+    state: false,
+    isDeleted: false,
+    updated: [],
   });
   // Filtering tasks
   const [active, setActive] = useState({
@@ -40,18 +46,23 @@ export default function ToDoProject() {
         handleShowEditPopup,
         handleFilteringTasks,
         hadnleDoneTasks,
+        deleteState,
+        handleConfirmDeleteTask,
       }}
     >
-      <div className="">
+      <>
+        <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-purple-900 w-[30%] mx-auto rounded-md shadow-2xl p-4 max-sm:w-[80%] max-md:w-[80%] max-lg:w-[60%]">
+          <Header />
+          <ToDoTask />
+          <Footer
+            taskValue={taskValue}
+            changeTaskValue={changeTaskValue}
+            handleAddNewTask={handleAddNewTask}
+          />
+        </div>
         <EditTaskPopup />
-        <Header />
-        <ToDoTask />
-        <Footer
-          taskValue={taskValue}
-          changeTaskValue={changeTaskValue}
-          handleAddNewTask={handleAddNewTask}
-        />
-      </div>
+        <DeleteTaskPopUp />
+      </>
     </TasksContext.Provider>
   );
 
@@ -69,7 +80,13 @@ export default function ToDoProject() {
     setTaskValue("");
   }
   function handleDeleteTaks(updatedTasks) {
-    setTasksTitles(updatedTasks);
+    setDeleteState(updatedTasks);
+  }
+  function handleConfirmDeleteTask(state) {
+    if (state) {
+      setTasksTitles(deleteState.updated);
+    }
+    setDeleteState({ ...deleteState, state: false });
   }
   function handleShowEditPopup({ id, state, prevTitle }) {
     setEditState({ id, state, prevTitle });
