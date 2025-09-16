@@ -30,8 +30,8 @@ export default function ToDoProject() {
     notDone: false,
   });
   const all = tasksTtiles;
-  const done = tasksTtiles.filter((t) => t.isCompleted == true);
-  const notDone = tasksTtiles.filter((t) => t.isCompleted == false);
+  const done = tasksTtiles;
+  const notDone = tasksTtiles;
 
   return (
     <TasksContext.Provider
