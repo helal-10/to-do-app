@@ -29,11 +29,11 @@ export default function ToDoProject() {
     done: false,
     notDone: false,
   });
-  const all = loaclStorageTasks;
-  const done = loaclStorageTasks.filter((t) => t.isCompleted == true);
-  const notDone = loaclStorageTasks.filter((t) => t.isCompleted == false);
+  const all = tasksTtiles;
+  const done = tasksTtiles.filter((t) => t.isCompleted == true);
+  const notDone = tasksTtiles.filter((t) => t.isCompleted == false);
 
-  localStorage.setItem("t", JSON.stringify([...tasksTtiles]));
+  localStorage.setItem("t", JSON.stringify([tasksTtiles]));
 
   return (
     <TasksContext.Provider
@@ -78,7 +78,7 @@ export default function ToDoProject() {
   }
   function handleAddNewTask() {
     const updatedTaskTitles = [
-      ...loaclStorageTasks,
+      ...tasksTtiles,
       { title: taskValue, id: uuidv4(), isCompleted: false },
     ];
     setTasksTitles(updatedTaskTitles);
