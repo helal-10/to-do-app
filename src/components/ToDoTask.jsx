@@ -42,7 +42,11 @@ export default function ToDoTask() {
               />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-black max-sm:text-[16px]">
+              <h1
+                className={`text-2xl font-bold text-black max-sm:text-[16px] ${
+                  t.isCompleted ? "line-through decoration-black" : ""
+                }`}
+              >
                 {t.title}
               </h1>
             </div>
@@ -84,7 +88,7 @@ export default function ToDoTask() {
               />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-black max-sm:text-[16px]">
+              <h1 className="text-2xl font-bold text-black max-sm:text-[16px] line-through decoration-black">
                 {t.title}
               </h1>
             </div>

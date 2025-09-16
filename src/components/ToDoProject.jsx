@@ -7,18 +7,15 @@ import EditTaskPopup from "./EditTaskPopup";
 import DeleteTaskPopUp from "./DeleteTaskPopUp";
 
 //others
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 export default function ToDoProject() {
-  const loaclStorageTasks = JSON.parse(localStorage.getItem("t"));
-  useEffect(() => {
-    if (loaclStorageTasks) {
-      setTasksTitles(loaclStorageTasks);
-    }
-  }, []);
+  const loaclStorageTasks = localStorage.getItem("t");
 
   const [taskValue, setTaskValue] = useState("");
-  const [tasksTtiles, setTasksTitles] = useState([]);
+  const [tasksTtiles, setTasksTitles] = useState(() => {
+    return loaclStorageTasks ? JSON.parse(loaclStorageTasks) : [];
+  });
   const [editState, setEditState] = useState({
     state: false,
     id: "",
