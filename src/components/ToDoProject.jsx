@@ -33,8 +33,6 @@ export default function ToDoProject() {
   const done = tasksTtiles.filter((t) => t.isCompleted == true);
   const notDone = tasksTtiles.filter((t) => t.isCompleted == false);
 
-  localStorage.setItem("t", JSON.stringify(tasksTtiles));
-
   return (
     <TasksContext.Provider
       value={{
@@ -93,6 +91,7 @@ export default function ToDoProject() {
   function handleConfirmDeleteTask(state) {
     if (state) {
       setTasksTitles(deleteState.updated);
+      localStorage.setItem("t", JSON.stringify(deleteState.updated));
     }
     setDeleteState({ ...deleteState, state: false });
   }
@@ -109,6 +108,7 @@ export default function ToDoProject() {
       return t;
     });
     setTasksTitles(updatedTasks);
+    localStorage.setItem("t", JSON.stringify(updatedTasks));
   }
   function hadnleDoneTasks(id) {
     const updatedTasks = tasksTtiles.map((t) => {
@@ -118,5 +118,6 @@ export default function ToDoProject() {
       return t;
     });
     setTasksTitles(updatedTasks);
+    localStorage.setItem("t", JSON.stringify(updatedTasks));
   }
 }
