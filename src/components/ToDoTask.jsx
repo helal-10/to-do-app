@@ -11,6 +11,7 @@ export default function ToDoTask() {
   let tasks;
   if (tasksContext.active.all) {
     tasks = tasksContext.all.map((t) => {
+
       if (t.title) {
         return (
           <div

@@ -7,7 +7,7 @@ import EditTaskPopup from "./EditTaskPopup";
 import DeleteTaskPopUp from "./DeleteTaskPopUp";
 
 //others
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 export default function ToDoProject() {
   const loaclStorageTasks = localStorage.getItem("t");
@@ -32,9 +32,14 @@ export default function ToDoProject() {
     done: false,
     notDone: false,
   });
+
   const all = tasksTtiles;
-  const done = tasksTtiles.filter((t) => t.isCompleted == true);
-  const notDone = tasksTtiles.filter((t) => t.isCompleted == false);
+  const done = useMemo(() => {
+    return tasksTtiles.filter((t) => t.isCompleted);
+  }, [tasksTtiles]);
+  const notDone = useMemo(() => {
+    return tasksTtiles.filter((t) => !t.isCompleted);
+  }, [tasksTtiles]);
 
   return (
     <TasksContext.Provider
