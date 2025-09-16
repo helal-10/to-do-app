@@ -33,7 +33,7 @@ export default function ToDoProject() {
   const done = tasksTtiles.filter((t) => t.isCompleted == true);
   const notDone = tasksTtiles.filter((t) => t.isCompleted == false);
 
-  localStorage.setItem("t", JSON.stringify([tasksTtiles]));
+  localStorage.setItem("t", JSON.stringify(tasksTtiles));
 
   return (
     <TasksContext.Provider
