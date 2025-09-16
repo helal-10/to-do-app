@@ -167,7 +167,6 @@ export default function ToDoTask() {
       prevTitle: title,
     });
   }
-
   return (
     <>
       {tasks.length < 1 ? (

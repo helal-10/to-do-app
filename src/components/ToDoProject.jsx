@@ -11,8 +11,9 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 export default function ToDoProject() {
+  const loaclStorageTasks = JSON.parse(localStorage.getItem("t"));
   const [taskValue, setTaskValue] = useState("");
-  const [tasksTtiles, setTasksTitles] = useState([]);
+  const [tasksTtiles, setTasksTitles] = useState(loaclStorageTasks);
   const [editState, setEditState] = useState({
     state: false,
     id: "",
@@ -32,10 +33,13 @@ export default function ToDoProject() {
   const done = tasksTtiles.filter((t) => t.isCompleted == true);
   const notDone = tasksTtiles.filter((t) => t.isCompleted == false);
 
+  localStorage.setItem("t", JSON.stringify([...tasksTtiles]));
+
   return (
     <TasksContext.Provider
       value={{
         tasksTtiles,
+        loaclStorageTasks,
         all,
         done,
         notDone,
@@ -73,10 +77,14 @@ export default function ToDoProject() {
     setTaskValue(value);
   }
   function handleAddNewTask() {
-    setTasksTitles([
-      ...tasksTtiles,
+    const updatedTaskTitles = [
+      ...loaclStorageTasks,
       { title: taskValue, id: uuidv4(), isCompleted: false },
-    ]);
+    ];
+    setTasksTitles(updatedTaskTitles);
+
+    localStorage.setItem("t", JSON.stringify(updatedTaskTitles));
+
     setTaskValue("");
   }
   function handleDeleteTaks(updatedTasks) {
