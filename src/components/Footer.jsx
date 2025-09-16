@@ -10,7 +10,7 @@ export default function Footer({
     handleAddNewTask();
   }
   return (
-    <div className="flex justify-center items-center space-x-4 mt-8">
+    <div className="flex justify-center items-center space-x-4 mt-8 mx-auto max-sm:w-[80%] max-md:w-[65%] max-lg:w-[50%]">
       <button
         onClick={handleAddTaskTitle}
         className="flex-1 border border-solid border-transparent cursor-pointer text-black bg-[#d9d9d9] duration-300 rounded-sm p-2 font-bold dura hover:bg-gray-500 hover:text-white "
@@ -24,7 +24,7 @@ export default function Footer({
         ref={inputFocus}
         placeholder="عنوان المهمة"
         value={taskValue}
-        className="flex-2 border border-solid border-[#d9d9d9] rounded-sm p-2 outline-0 focus:border focus:border-solid focus:border-gray-500 min-sm:text-[16px]"
+        className="flex-2 border border-solid border-[#d9d9d9] rounded-sm p-2 outline-0 focus:border focus:border-solid focus:border-gray-500 max-sm:text-[16px]"
       />
     </div>
   );
