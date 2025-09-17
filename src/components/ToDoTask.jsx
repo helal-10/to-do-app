@@ -50,8 +50,12 @@ export default function ToDoTask({
                 {t.title}
               </h1>
               <div className="flex justify-center items-center space-x-2 text-black font-bold">
-                <p className="bg-red-600 rounded-sm px-2">{t.time}</p>
-                <p className="bg-red-600 rounded-sm px-2">{t.date}</p>
+                <p className="bg-red-600 rounded-sm px-2 max-sm:text-[14px]">
+                  {t.time}
+                </p>
+                <p className="bg-red-600 rounded-sm px-2 max-sm:text-[14px]">
+                  {t.date}
+                </p>
               </div>
             </div>
           </div>
