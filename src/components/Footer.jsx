@@ -40,7 +40,7 @@ export default function Footer({
     handleAddNewTask(dateTime);
   }
   return (
-    <div className="flex justify-center items-center space-x-4 mt-8 mx-auto max-sm:w-[90%] max-md:w-[75%] max-lg:w-[60%] px-6">
+    <div className="flex justify-center items-center space-x-4 mt-8 mx-auto max-sm:w-[95%] max-md:w-[80%] max-lg:w-[60%] px-6">
       <button
         onClick={handleAddTaskTitle}
         className="flex-1 border border-solid border-transparent cursor-pointer h-[78px] text-black bg-[#d9d9d9] duration-300 rounded-sm p-2 font-bold dura hover:bg-gray-500 hover:text-white "
