@@ -46,7 +46,7 @@ export default function ToDoProject() {
 
   return (
     <>
-      <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-purple-900 w-[50%] mx-auto rounded-md shadow-2xl p-4 max-sm:p-4 max-sm:w-[80%] max-md:w-[80%] max-lg:w-[60%]">
+      <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-purple-900 w-[50%] mx-auto rounded-md shadow-2xl p-4 max-sm:p-4 max-sm:w-[95%] max-md:w-[80%] max-lg:w-[60%]">
         <Header active={active} handleFilteringTasks={handleFilteringTasks} />
         <ToDoTask
           tasksTtiles={tasksTtiles}
