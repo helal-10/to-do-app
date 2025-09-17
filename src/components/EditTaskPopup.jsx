@@ -2,9 +2,9 @@ import { useState } from "react";
 
 export default function EditTaskPopup({ editState, handleEditTasks }) {
   const [inputValue, setInputValue] = useState({
-    title: editState.prevTitle,
-    time: editState.time,
-    date: editState.date,
+    title: "",
+    time: "",
+    date: "",
   });
 
   if (editState.state) {
@@ -45,7 +45,9 @@ export default function EditTaskPopup({ editState, handleEditTasks }) {
           </div>
           <div className="flex justify-start items-center mt-8 space-x-6">
             <button
-              onClick={handleEditConfirm}
+              onClick={() => {
+                handleEditConfirm();
+              }}
               className="font-bold cursor-pointer hover:text-red-600 hover:bg-[#d9d9d9] duration-200 p-1 rounded-sm"
             >
               تعديل
@@ -62,16 +64,17 @@ export default function EditTaskPopup({ editState, handleEditTasks }) {
     );
   }
   function handleEditConfirm() {
-    console.log(inputValue);
-
     const updatedValues = {
       state: false,
       confirm: true,
-      newTitle: inputValue.title,
-      newTime: inputValue.time,
-      newDate: inputValue.date,
+      newTitle: inputValue.title ? inputValue.title : editState.prevTitle,
+      newTime: inputValue.time ? inputValue.time : editState.time,
+      newDate: inputValue.date ? inputValue.date : editState.date,
     };
+    console.log("from funtion", updatedValues);
+
     handleEditTasks(updatedValues);
+    setInputValue({ title: "", time: "", date: "" });
   }
   function handleEditCancel() {
     const updatedValues = { state: false, confirm: false };

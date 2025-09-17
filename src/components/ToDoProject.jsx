@@ -108,13 +108,7 @@ export default function ToDoProject() {
     setDeleteState({ ...deleteState, state: false });
   }
   function handleShowEditPopup({ id, state, prevTitle, time, date }) {
-    setEditState({
-      id: id,
-      state: state,
-      prevTitle: prevTitle,
-      time: time,
-      date: date,
-    });
+    setEditState({ id, state, prevTitle, time, date });
   }
   function handleEditTasks({ state, confirm, newTitle, newTime, newDate }) {
     setEditState({ ...editState, state: state });
