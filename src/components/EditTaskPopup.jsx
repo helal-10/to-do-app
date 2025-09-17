@@ -1,11 +1,13 @@
-import { useContext } from "react";
-import { TasksContext } from "../contexts/TasksContext";
 import { useState } from "react";
-export default function EditTaskPopup() {
-  const [inputValue, setInputValue] = useState("");
-  const tasks = useContext(TasksContext);
 
-  if (tasks.editState.state) {
+export default function EditTaskPopup({ editState, handleEditTasks }) {
+  const [inputValue, setInputValue] = useState({
+    title: editState.prevTitle,
+    time: editState.time,
+    date: editState.date,
+  });
+
+  if (editState.state) {
     return (
       <>
         <div className="absolute bg-black/50 w-[100vw] h-[100vh] top-0 left-0"></div>
@@ -13,15 +15,34 @@ export default function EditTaskPopup() {
           <h1 className="text-end text-2xl text-[#d9d9d9] font-bold">
             تعديل المهمة
           </h1>
-          <input
-            defaultValue={tasks.editState.prevTitle}
-            onChange={(e) => {
-              setInputValue(e.target.value);
-            }}
-            className="border-b-2 border-sold border-[#d9d9d9] text-end w-[100%] mt-12 focus:outline-0"
-            placeholder="عنوان المهمة"
-          />
-
+          <div className="flex justify-between items-center space-x-3 border-b-2 border-sold border-[#d9d9d9]">
+            <div className="flex-1 flex flex-col space-y-2">
+              <input
+                onChange={(e) => {
+                  setInputValue({ ...inputValue, time: e.target.value });
+                }}
+                defaultValue={editState.time}
+                className="w-[115px] border border-solid border-black/50 rounded-sm focus:outline-0 text-black"
+                type="time"
+              />
+              <input
+                onChange={(e) => {
+                  setInputValue({ ...inputValue, date: e.target.value });
+                }}
+                defaultValue={editState.date}
+                className="w-[115px] border border-solid border-black/50 rounded-sm focus:outline-0 text-black"
+                type="date"
+              />
+            </div>
+            <input
+              defaultValue={editState.prevTitle}
+              onChange={(e) => {
+                setInputValue({ ...inputValue, title: e.target.value });
+              }}
+              className="text-end w-[100%] mt-12 focus:outline-0"
+              placeholder="عنوان المهمة"
+            />
+          </div>
           <div className="flex justify-start items-center mt-8 space-x-6">
             <button
               onClick={handleEditConfirm}
@@ -41,15 +62,19 @@ export default function EditTaskPopup() {
     );
   }
   function handleEditConfirm() {
-    if (inputValue) {
-      tasks.handleEditTasks({
-        state: false,
-        confirm: true,
-        newTitle: inputValue,
-      });
-    }
+    console.log(inputValue);
+
+    const updatedValues = {
+      state: false,
+      confirm: true,
+      newTitle: inputValue.title,
+      newTime: inputValue.time,
+      newDate: inputValue.date,
+    };
+    handleEditTasks(updatedValues);
   }
   function handleEditCancel() {
-    tasks.handleEditTasks({ state: false, confirm: false });
+    const updatedValues = { state: false, confirm: false };
+    handleEditTasks(updatedValues);
   }
 }

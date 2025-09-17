@@ -2,16 +2,15 @@
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CheckIcon from "@mui/icons-material/CheckOutlined";
 import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
-//component
-import { TasksContext } from "../contexts/TasksContext";
-//other
-import { useContext } from "react";
-export default function ToDoTask() {
-  const tasksContext = useContext(TasksContext);
+export default function ToDoTask({
+  tasksTtiles,
+  active,
+  filteredTasks,
+  handlers,
+}) {
   let tasks;
-  if (tasksContext.active.all) {
-    tasks = tasksContext.all.map((t) => {
-
+  if (active.all) {
+    tasks = filteredTasks.all.map((t) => {
       if (t.title) {
         return (
           <div
@@ -37,27 +36,31 @@ export default function ToDoTask() {
               />
               <ModeOutlinedIcon
                 onClick={() => {
-                  handleEditClick(t.id, t.title);
+                  handleEditClick(t.id, t.title, t.time, t.date);
                 }}
                 className="bg-white border border-solid border-purple-500 text-purple-500 text-[35px] max-sm:text-[25px] rounded-[50%] p-1 cursor-pointer"
               />
             </div>
-            <div>
+            <div className=" text-end">
               <h1
-                className={`text-2xl font-bold text-black max-sm:text-[16px] ${
+                className={`text-2xl font-bold text-black mb-2 max-sm:text-[16px] ${
                   t.isCompleted ? "line-through decoration-black" : ""
                 }`}
               >
                 {t.title}
               </h1>
+              <div className="flex justify-center items-center space-x-2 text-black font-bold">
+                <p className="bg-red-600 rounded-sm px-2">{t.time}</p>
+                <p className="bg-red-600 rounded-sm px-2">{t.date}</p>
+              </div>
             </div>
           </div>
         );
       }
     });
   }
-  if (tasksContext.active.done) {
-    tasks = tasksContext.done.map((t) => {
+  if (active.done) {
+    tasks = filteredTasks.done.map((t) => {
       if (t.title) {
         return (
           <div
@@ -83,23 +86,27 @@ export default function ToDoTask() {
               />
               <ModeOutlinedIcon
                 onClick={() => {
-                  handleEditClick(t.id, t.title);
+                  handleEditClick(t.id, t.title, t.time, t.date);
                 }}
                 className="bg-white border border-solid border-purple-500 text-purple-500 text-[35px] max-sm:text-[25px] rounded-[50%] p-1 cursor-pointer"
               />
             </div>
-            <div>
-              <h1 className="text-2xl font-bold text-black max-sm:text-[16px] line-through decoration-black">
+            <div className=" text-end">
+              <h1 className="text-2xl font-bold mb-2 text-black max-sm:text-[16px] line-through decoration-black">
                 {t.title}
               </h1>
+              <div className="flex justify-center items-center space-x-2 text-black font-bold">
+                <p className="bg-red-600 rounded-sm px-2">{t.time}</p>
+                <p className="bg-red-600 rounded-sm px-2">{t.date}</p>
+              </div>
             </div>
           </div>
         );
       }
     });
   }
-  if (tasksContext.active.notDone) {
-    tasks = tasksContext.notDone.map((t) => {
+  if (active.notDone) {
+    tasks = filteredTasks.notDone.map((t) => {
       if (t.title) {
         return (
           <div
@@ -125,15 +132,19 @@ export default function ToDoTask() {
               />
               <ModeOutlinedIcon
                 onClick={() => {
-                  handleEditClick(t.id, t.title);
+                  handleEditClick(t.id, t.title, t.time, t.date);
                 }}
                 className="bg-white border border-solid border-purple-500 text-purple-500 text-[35px] max-sm:text-[25px] rounded-[50%] p-1 cursor-pointer"
               />
             </div>
-            <div>
-              <h1 className="text-2xl font-bold text-black max-sm:text-[16px]">
+            <div className=" text-end">
+              <h1 className="text-2xl font-bold mb-2 text-black max-sm:text-[16px]">
                 {t.title}
               </h1>
+              <div className="flex justify-center items-center space-x-2 text-black font-bold">
+                <p className="bg-red-600 rounded-sm px-2">{t.time}</p>
+                <p className="bg-red-600 rounded-sm px-2">{t.date}</p>
+              </div>
             </div>
           </div>
         );
@@ -149,27 +160,29 @@ export default function ToDoTask() {
 
     // e.target.classLis.toggle("background-color: green; color: white");
 
-    tasksContext.hadnleDoneTasks(id);
+    handlers.hadnleDoneTasks(id);
   }
 
   function handleDeleteClick(id) {
-    const updatedTasks = tasksContext.tasksTtiles.filter((t) => {
+    const updatedTasks = tasksTtiles.filter((t) => {
       if (t.id !== id) {
         return t;
       }
     });
-    tasksContext.handleDeleteTaks({
+    handlers.handleDeleteTaks({
       state: true,
       isDeleted: false,
       updated: updatedTasks,
     });
   }
 
-  function handleEditClick(idNumber, title) {
-    tasksContext.handleShowEditPopup({
+  function handleEditClick(idNumber, title, time, date) {
+    handlers.handleShowEditPopup({
       id: idNumber,
       state: true,
       prevTitle: title,
+      time: time,
+      date: date,
     });
   }
   return (

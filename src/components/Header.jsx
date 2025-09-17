@@ -1,7 +1,4 @@
-import { useContext } from "react";
-import { TasksContext } from "../contexts/TasksContext";
-export default function Header() {
-  const task = useContext(TasksContext);
+export default function Header({ active, handleFilteringTasks }) {
   return (
     <div style={{ direction: "rtl" }}>
       <h1 className="text-purple-200 text-5xl font-bold max-sm:text-[30px] max-md:text-[40px] max-lg:text-[50px]">
@@ -13,42 +10,38 @@ export default function Header() {
       >
         <li
           onClick={() => {
-            task.handleFilteringTasks({
+            handleFilteringTasks({
               all: true,
               done: false,
               notDone: false,
             });
           }}
-          className={`li-btn min-lg:text-[20px] ${
-            task.active.all ? "active" : ""
-          }`}
+          className={`li-btn min-lg:text-[20px] ${active.all ? "active" : ""}`}
         >
           كل المهام
         </li>
         <li
           onClick={() => {
-            task.handleFilteringTasks({
+            handleFilteringTasks({
               all: false,
               done: true,
               notDone: false,
             });
           }}
-          className={`li-btn min-lg:text-[20px] ${
-            task.active.done ? "active" : ""
-          }`}
+          className={`li-btn min-lg:text-[20px] ${active.done ? "active" : ""}`}
         >
           المنجزه
         </li>
         <li
           onClick={() => {
-            task.handleFilteringTasks({
+            handleFilteringTasks({
               all: false,
               done: false,
               notDone: true,
             });
           }}
           className={`li-btn min-lg:text-[20px] ${
-            task.active.notDone ? "active" : ""
+            active.notDone ? "active" : ""
           }`}
         >
           الغير منجزة

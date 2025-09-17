@@ -2,7 +2,6 @@
 import Header from "./Header";
 import Footer from "./Footer";
 import ToDoTask from "./ToDoTask";
-import { TasksContext } from "../contexts/TasksContext";
 import EditTaskPopup from "./EditTaskPopup";
 import DeleteTaskPopUp from "./DeleteTaskPopUp";
 
@@ -11,14 +10,17 @@ import { useState, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 export default function ToDoProject() {
   const loaclStorageTasks = localStorage.getItem("t");
-
   const [taskValue, setTaskValue] = useState("");
+  // set the localStorage values if there
   const [tasksTtiles, setTasksTitles] = useState(() => {
     return loaclStorageTasks ? JSON.parse(loaclStorageTasks) : [];
   });
   const [editState, setEditState] = useState({
     state: false,
     id: "",
+    prevTitle: "",
+    time: "",
+    date: "",
   });
 
   const [deleteState, setDeleteState] = useState({
@@ -26,13 +28,14 @@ export default function ToDoProject() {
     isDeleted: false,
     updated: [],
   });
-  // Filtering tasks
+  // Filtering tasks States
   const [active, setActive] = useState({
     all: true,
     done: false,
     notDone: false,
   });
 
+  // Filtering Tasks Values
   const all = tasksTtiles;
   const done = useMemo(() => {
     return tasksTtiles.filter((t) => t.isCompleted);
@@ -42,38 +45,33 @@ export default function ToDoProject() {
   }, [tasksTtiles]);
 
   return (
-    <TasksContext.Provider
-      value={{
-        tasksTtiles,
-        loaclStorageTasks,
-        all,
-        done,
-        notDone,
-        active,
-        handleDeleteTaks,
-        handleEditTasks,
-        editState,
-        handleShowEditPopup,
-        handleFilteringTasks,
-        hadnleDoneTasks,
-        deleteState,
-        handleConfirmDeleteTask,
-      }}
-    >
-      <>
-        <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-purple-900 w-[30%] mx-auto rounded-md shadow-2xl p-4 max-sm:w-[80%] max-md:w-[80%] max-lg:w-[60%]">
-          <Header />
-          <ToDoTask />
-          <Footer
-            taskValue={taskValue}
-            changeTaskValue={changeTaskValue}
-            handleAddNewTask={handleAddNewTask}
-          />
-        </div>
-        <EditTaskPopup />
-        <DeleteTaskPopUp />
-      </>
-    </TasksContext.Provider>
+    <>
+      <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-purple-900 w-[50%] mx-auto rounded-md shadow-2xl p-4 max-sm:w-[80%] max-md:w-[80%] max-lg:w-[60%]">
+        <Header active={active} handleFilteringTasks={handleFilteringTasks} />
+        <ToDoTask
+          tasksTtiles={tasksTtiles}
+          editState={editState}
+          active={active}
+          filteredTasks={{ all, done, notDone }}
+          handlers={{
+            handleDeleteTaks,
+            handleEditTasks,
+            handleShowEditPopup,
+            hadnleDoneTasks,
+          }}
+        />
+        <Footer
+          taskValue={taskValue}
+          changeTaskValue={changeTaskValue}
+          handleAddNewTask={handleAddNewTask}
+        />
+      </div>
+      <EditTaskPopup editState={editState} handleEditTasks={handleEditTasks} />
+      <DeleteTaskPopUp
+        deleteState={deleteState}
+        handleConfirmDeleteTask={handleConfirmDeleteTask}
+      />
+    </>
   );
 
   function handleFilteringTasks(updatedFiltering) {
@@ -82,10 +80,16 @@ export default function ToDoProject() {
   function changeTaskValue(value) {
     setTaskValue(value);
   }
-  function handleAddNewTask() {
+  function handleAddNewTask({ time, date }) {
     const updatedTaskTitles = [
       ...tasksTtiles,
-      { title: taskValue, id: uuidv4(), isCompleted: false },
+      {
+        title: taskValue,
+        id: uuidv4(),
+        time: time,
+        date: date,
+        isCompleted: false,
+      },
     ];
     setTasksTitles(updatedTaskTitles);
 
@@ -103,14 +107,26 @@ export default function ToDoProject() {
     }
     setDeleteState({ ...deleteState, state: false });
   }
-  function handleShowEditPopup({ id, state, prevTitle }) {
-    setEditState({ id, state, prevTitle });
+  function handleShowEditPopup({ id, state, prevTitle, time, date }) {
+    setEditState({
+      id: id,
+      state: state,
+      prevTitle: prevTitle,
+      time: time,
+      date: date,
+    });
   }
-  function handleEditTasks({ state, confirm, newTitle }) {
+  function handleEditTasks({ state, confirm, newTitle, newTime, newDate }) {
     setEditState({ ...editState, state: state });
     const updatedTasks = tasksTtiles.map((t) => {
       if (t.id == editState.id && confirm) {
-        return { id: t.id, title: newTitle, isCompleted: t.isCompleted };
+        return {
+          id: t.id,
+          title: newTitle,
+          time: newTime,
+          date: newDate,
+          isCompleted: t.isCompleted,
+        };
       }
 
       return t;

@@ -1,8 +1,8 @@
-import { useContext } from "react";
-import { TasksContext } from "../contexts/TasksContext";
-export default function DeleteTaskPopUp() {
-  const task = useContext(TasksContext);
-  if (task.deleteState.state)
+export default function DeleteTaskPopUp({
+  deleteState,
+  handleConfirmDeleteTask,
+}) {
+  if (deleteState.state)
     return (
       <>
         <div className="absolute bg-black/50 w-[100vw] h-[100vh] top-0 left-0"></div>
@@ -16,7 +16,7 @@ export default function DeleteTaskPopUp() {
           <div className="flex items-center justify-start space-x-4 ">
             <button
               onClick={() => {
-                task.handleConfirmDeleteTask(true);
+                handleConfirmDeleteTask(true);
               }}
               className="text-red-500 duration-200 font-bold cursor-pointer hover:bg-gray-400 p-2 rounded-sm"
             >
@@ -24,7 +24,7 @@ export default function DeleteTaskPopUp() {
             </button>
             <button
               onClick={() => {
-                task.handleConfirmDeleteTask(false);
+                handleConfirmDeleteTask(false);
               }}
               className="text-red-500 duration-200 font-bold cursor-pointer hover:bg-gray-400 p-2 rounded-sm"
             >
