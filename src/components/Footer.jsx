@@ -47,7 +47,7 @@ export default function Footer({
       >
         اضافة
       </button>
-      <div className="flex-2 flex justify-around items-center space-x-2 w-[100%] h-[78px] border border-solid border-[#d9d9d9] rounded-sm p-2 outline-0 focus:border focus:border-solid focus:border-gray-500">
+      <div className="flex-2 max-sm:flex-3 flex justify-around items-center space-x-2 w-[100%] h-[78px] border border-solid border-[#d9d9d9] rounded-sm p-2 outline-0 focus:border focus:border-solid focus:border-gray-500">
         <div className="flex-1 flex flex-col space-y-2">
           <TaskTime dateTime={dateTime} handleDateAndTime={handleDateAndTime} />
         </div>
@@ -58,7 +58,7 @@ export default function Footer({
           ref={inputFocus}
           placeholder="عنوان المهمة"
           value={taskValue}
-          className="flex-2 border border-solid border-[#d9d9d9] rounded-sm p-2 outline-0 focus:border focus:border-solid focus:border-gray-500 max-sm:text-[16px] w-[100%] h-fit"
+          className="flex-2 border border-solid border-[#d9d9d9] rounded-sm p-2 outline-0 focus:border focus:border-solid focus:border-gray-500 max-sm:text-[16px] w-[100%] h-fit max-sm:flex-3"
         />
       </div>
     </div>
