@@ -26,7 +26,7 @@ export default function ToDoTask({
               />
               <CheckIcon
                 onClick={(e) => {
-                  handleCheckClick(t.id, e);
+                  handleCheckClick(t.id, e, t.isCompleted);
                 }}
                 className={`${
                   t.isCompleted
@@ -156,7 +156,7 @@ export default function ToDoTask({
     });
   }
 
-  function handleCheckClick(id, e) {
+  function handleCheckClick(id, e, isCompleted) {
     e.target.classList.toggle("bg-white");
     e.target.classList.toggle("text-green-500");
     e.target.classList.toggle("bg-green-500");
@@ -164,7 +164,7 @@ export default function ToDoTask({
 
     // e.target.classLis.toggle("background-color: green; color: white");
 
-    handlers.hadnleDoneTasks(id);
+    handlers.hadnleDoneTasks(id, isCompleted);
   }
 
   function handleDeleteClick(id) {

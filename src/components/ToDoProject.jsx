@@ -4,6 +4,7 @@ import Footer from "./Footer";
 import ToDoTask from "./ToDoTask";
 import EditTaskPopup from "./EditTaskPopup";
 import DeleteTaskPopUp from "./DeleteTaskPopUp";
+import NotiBar from "./NotiBar";
 
 //others
 import { useState, useMemo } from "react";
@@ -44,6 +45,12 @@ export default function ToDoProject() {
     return tasksTtiles.filter((t) => !t.isCompleted);
   }, [tasksTtiles]);
 
+  const [toastDetails, setToastDetails] = useState({
+    state: false,
+    bgColor: "",
+    text: "",
+  });
+
   return (
     <>
       <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-purple-900 w-[50%] mx-auto rounded-md shadow-2xl p-4 max-sm:p-4 max-sm:w-[95%] max-md:w-[80%] max-lg:w-[60%]">
@@ -71,6 +78,7 @@ export default function ToDoProject() {
         deleteState={deleteState}
         handleConfirmDeleteTask={handleConfirmDeleteTask}
       />
+      <NotiBar values={toastDetails} />
     </>
   );
 
@@ -102,6 +110,15 @@ export default function ToDoProject() {
   }
   function handleConfirmDeleteTask(state) {
     if (state) {
+      setToastDetails({
+        state: true,
+        bgColor: "bg-red-500",
+        text: "تم حذف المهمة بنجاح",
+      });
+      const timeInterval = setInterval(() => {
+        setToastDetails((e) => setToastDetails({ ...e, state: false }));
+        clearInterval(timeInterval);
+      }, 2000);
       setTasksTitles(deleteState.updated);
       localStorage.setItem("t", JSON.stringify(deleteState.updated));
     }
@@ -114,6 +131,15 @@ export default function ToDoProject() {
     setEditState({ ...editState, state: state });
     const updatedTasks = tasksTtiles.map((t) => {
       if (t.id == editState.id && confirm) {
+        setToastDetails({
+          state: true,
+          bgColor: "bg-purple-900",
+          text: "تم تعديل المهمة بنجاح",
+        });
+        const timeInterval = setInterval(() => {
+          setToastDetails((e) => setToastDetails({ ...e, state: false }));
+          clearInterval(timeInterval);
+        }, 2000);
         return {
           id: t.id,
           title: newTitle,
@@ -128,9 +154,20 @@ export default function ToDoProject() {
     setTasksTitles(updatedTasks);
     localStorage.setItem("t", JSON.stringify(updatedTasks));
   }
-  function hadnleDoneTasks(id) {
+  function hadnleDoneTasks(id, isCompleted) {
     const updatedTasks = tasksTtiles.map((t) => {
       if (t.id == id) {
+        if (!isCompleted) {
+          setToastDetails({
+            state: true,
+            bgColor: "bg-green-500",
+            text: "تم إنجاز المهمة بنجاح",
+          });
+          const timeInterval = setInterval(() => {
+            setToastDetails((e) => setToastDetails({ ...e, state: false }));
+            clearInterval(timeInterval);
+          }, 2000);
+        }
         return { ...t, isCompleted: !t.isCompleted };
       }
       return t;

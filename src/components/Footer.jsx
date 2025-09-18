@@ -7,6 +7,7 @@ export default function Footer({
   handleAddNewTask,
 }) {
   const date = new Date();
+
   // set the default time
   const defaultTime = `${
     date.getHours().toString().length == 1

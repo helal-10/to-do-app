@@ -71,8 +71,6 @@ export default function EditTaskPopup({ editState, handleEditTasks }) {
       newTime: inputValue.time ? inputValue.time : editState.time,
       newDate: inputValue.date ? inputValue.date : editState.date,
     };
-    console.log("from funtion", updatedValues);
-
     handleEditTasks(updatedValues);
     setInputValue({ title: "", time: "", date: "" });
   }
