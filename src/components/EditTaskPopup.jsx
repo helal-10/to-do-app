@@ -75,7 +75,6 @@ export default function EditTaskPopup({ editState, handleEditTasks }) {
     setInputValue({ title: "", time: "", date: "" });
   }
   function handleEditCancel() {
-    const updatedValues = { state: false, confirm: false };
-    handleEditTasks(updatedValues);
+    handleEditTasks({ confirm: false });
   }
 }

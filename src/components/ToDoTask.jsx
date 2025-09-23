@@ -3,7 +3,6 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CheckIcon from "@mui/icons-material/CheckOutlined";
 import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
 export default function ToDoTask({
-  tasksTtiles,
   active,
   filteredTasks,
   handlers,
@@ -168,16 +167,8 @@ export default function ToDoTask({
   }
 
   function handleDeleteClick(id) {
-    const updatedTasks = tasksTtiles.filter((t) => {
-      if (t.id !== id) {
-        return t;
-      }
-    });
-    handlers.handleDeleteTaks({
-      state: true,
-      isDeleted: false,
-      updated: updatedTasks,
-    });
+    handlers.handleDeleteTaks(id);
+    
   }
 
   function handleEditClick(idNumber, title, time, date) {

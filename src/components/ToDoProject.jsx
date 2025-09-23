@@ -5,17 +5,17 @@ import ToDoTask from "./ToDoTask";
 import EditTaskPopup from "./EditTaskPopup";
 import DeleteTaskPopUp from "./DeleteTaskPopUp";
 import NotiBar from "./NotiBar";
-
+import toDoReduce from "../reducers/toDoReduce";
 //others
-import { useState, useMemo } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { useState, useMemo, useReducer } from "react";
+
 export default function ToDoProject() {
-  const loaclStorageTasks = localStorage.getItem("t");
   const [taskValue, setTaskValue] = useState("");
-  // set the localStorage values if there
-  const [tasksTtiles, setTasksTitles] = useState(() => {
-    return loaclStorageTasks ? JSON.parse(loaclStorageTasks) : [];
-  });
+  const [tasksTtiles2, dispatch] = useReducer(
+    toDoReduce,
+    // retrive the localStorage values if there
+    localStorage.getItem("t") ? JSON.parse(localStorage.getItem("t")) : []
+  );
   const [editState, setEditState] = useState({
     state: false,
     id: "",
@@ -25,9 +25,8 @@ export default function ToDoProject() {
   });
 
   const [deleteState, setDeleteState] = useState({
+    updatedTasks: [],
     state: false,
-    isDeleted: false,
-    updated: [],
   });
   // Filtering tasks States
   const [active, setActive] = useState({
@@ -37,13 +36,13 @@ export default function ToDoProject() {
   });
 
   // Filtering Tasks Values
-  const all = tasksTtiles;
+  const all = tasksTtiles2;
   const done = useMemo(() => {
-    return tasksTtiles.filter((t) => t.isCompleted);
-  }, [tasksTtiles]);
+    return tasksTtiles2.filter((t) => t.isCompleted);
+  }, [tasksTtiles2]);
   const notDone = useMemo(() => {
-    return tasksTtiles.filter((t) => !t.isCompleted);
-  }, [tasksTtiles]);
+    return tasksTtiles2.filter((t) => !t.isCompleted);
+  }, [tasksTtiles2]);
 
   const [toastDetails, setToastDetails] = useState({
     state: false,
@@ -56,7 +55,6 @@ export default function ToDoProject() {
       <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-purple-900 w-[50%] mx-auto rounded-md shadow-2xl p-4 max-sm:p-4 max-sm:w-[95%] max-md:w-[80%] max-lg:w-[60%]">
         <Header active={active} handleFilteringTasks={handleFilteringTasks} />
         <ToDoTask
-          tasksTtiles={tasksTtiles}
           editState={editState}
           active={active}
           filteredTasks={{ all, done, notDone }}
@@ -69,7 +67,7 @@ export default function ToDoProject() {
         />
         <Footer
           taskValue={taskValue}
-          changeTaskValue={changeTaskValue}
+          changeTaskValue={changeTaskInputValue}
           handleAddNewTask={handleAddNewTask}
         />
       </div>
@@ -81,32 +79,22 @@ export default function ToDoProject() {
       <NotiBar values={toastDetails} />
     </>
   );
-
-  function handleFilteringTasks(updatedFiltering) {
-    setActive(updatedFiltering);
-  }
-  function changeTaskValue(value) {
-    setTaskValue(value);
-  }
   function handleAddNewTask({ time, date }) {
-    const updatedTaskTitles = [
-      ...tasksTtiles,
-      {
-        title: taskValue,
-        id: uuidv4(),
+    dispatch({
+      type: "add",
+      payload: {
+        taskValue: taskValue,
         time: time,
         date: date,
-        isCompleted: false,
       },
-    ];
-    setTasksTitles(updatedTaskTitles);
-
-    localStorage.setItem("t", JSON.stringify(updatedTaskTitles));
-
+    });
     setTaskValue("");
   }
-  function handleDeleteTaks(updatedTasks) {
-    setDeleteState(updatedTasks);
+  function handleDeleteTaks(id) {
+    const updatedTasks = tasksTtiles2.filter((t) => {
+      return t.id != id;
+    });
+    setDeleteState({ updatedTasks: updatedTasks, state: true });
   }
   function handleConfirmDeleteTask(state) {
     if (state) {
@@ -119,60 +107,55 @@ export default function ToDoProject() {
         setToastDetails((e) => setToastDetails({ ...e, state: false }));
         clearInterval(timeInterval);
       }, 2000);
-      setTasksTitles(deleteState.updated);
-      localStorage.setItem("t", JSON.stringify(deleteState.updated));
+      dispatch({ type: "confirmDelete", payload: deleteState });
     }
     setDeleteState({ ...deleteState, state: false });
   }
-  function handleShowEditPopup({ id, state, prevTitle, time, date }) {
-    setEditState({ id, state, prevTitle, time, date });
+  function handleEditTasks(editValues) {
+    if (editValues.confirm) {
+      setToastDetails({
+        state: true,
+        bgColor: "bg-purple-900",
+        text: "تم تعديل المهمة بنجاح",
+      });
+      dispatch({
+        type: "edit",
+        payload: {
+          id: editState.id,
+          editValues: editValues,
+        },
+      });
+    }
+    setEditState({ ...editState, state: false });
   }
-  function handleEditTasks({ state, confirm, newTitle, newTime, newDate }) {
-    setEditState({ ...editState, state: state });
-    const updatedTasks = tasksTtiles.map((t) => {
-      if (t.id == editState.id && confirm) {
-        setToastDetails({
-          state: true,
-          bgColor: "bg-purple-900",
-          text: "تم تعديل المهمة بنجاح",
-        });
-        const timeInterval = setInterval(() => {
-          setToastDetails((e) => setToastDetails({ ...e, state: false }));
-          clearInterval(timeInterval);
-        }, 2000);
-        return {
-          id: t.id,
-          title: newTitle,
-          time: newTime,
-          date: newDate,
-          isCompleted: t.isCompleted,
-        };
-      }
-
-      return t;
-    });
-    setTasksTitles(updatedTasks);
-    localStorage.setItem("t", JSON.stringify(updatedTasks));
+  function handleShowEditPopup(editValues) {
+    setEditState(editValues);
   }
   function hadnleDoneTasks(id, isCompleted) {
-    const updatedTasks = tasksTtiles.map((t) => {
-      if (t.id == id) {
-        if (!isCompleted) {
-          setToastDetails({
-            state: true,
-            bgColor: "bg-green-500",
-            text: "تم إنجاز المهمة بنجاح",
-          });
-          const timeInterval = setInterval(() => {
-            setToastDetails((e) => setToastDetails({ ...e, state: false }));
-            clearInterval(timeInterval);
-          }, 2000);
-        }
-        return { ...t, isCompleted: !t.isCompleted };
-      }
-      return t;
+    if (!isCompleted) {
+      setToastDetails({
+        state: true,
+        bgColor: "bg-green-500",
+        text: "تم إنجاز المهمة بنجاح",
+      });
+      const timeInterval = setInterval(() => {
+        setToastDetails((e) => setToastDetails({ ...e, state: false }));
+        clearInterval(timeInterval);
+      }, 2000);
+    }
+    dispatch({
+      type: "done",
+      payload: {
+        id: id,
+        isCompleted: isCompleted,
+      },
     });
-    setTasksTitles(updatedTasks);
-    localStorage.setItem("t", JSON.stringify(updatedTasks));
+  }
+
+  function handleFilteringTasks(updatedFiltering) {
+    setActive(updatedFiltering);
+  }
+  function changeTaskInputValue(value) {
+    setTaskValue(value);
   }
 }
